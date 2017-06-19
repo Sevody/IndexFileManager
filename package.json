@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Sevody/IndexFileManager/issues"
   },
-  "homepage": "https://github.com/Sevody/IndexFileManager#readme"
+  "homepage": "https://github.com/Sevody/IndexFileManager#readme",
+  "dependencies": {
+    "ffmetadata": "^1.4.0"
+  }
 }
