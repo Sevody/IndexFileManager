@@ -3,7 +3,6 @@ const fs = require('fs')
 const cp = require('child_process')
 const path = require('path')
 const _ = require('lodash')
-const fixPath = require('fix-path')()
 
 class WinRAR {
   constructor(opts) {
