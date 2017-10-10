@@ -1,5 +1,5 @@
 'use strict';
-const fs = require('fs')
+const fs = require('fs-extra')
 const cp = require('child_process')
 const path = require('path')
 const _ = require('lodash')
@@ -19,13 +19,15 @@ class WinRAR {
   }
   zip(file) {
     const opts = this.options
-    const cmd = `rar a -ep ${file} ${opts.targetDir}`
+    const cmd = `rar a -ep ${path.resolve(file)} ${path.resolve(opts.targetDir)}`
     // 'rar a -eq num_all.rar .\test_data'
     this.run(cmd)
   }
   unzip(file) {
     const opts = this.options
-    const cmd = `rar e ${opts.password} ${file} ${opts.targetDir}`
+    const targetFileDir = path.join(opts.targetDir, path.basename(file, '.rar')) 
+    fs.ensureDirSync(targetFileDir)
+    const cmd = `rar e ${opts.password} ${path.resolve(file)} ${path.resolve(targetFileDir)}`
     // 'rar e  num_all_tg.zip .\test_d2'
     this.run(cmd)
   }
