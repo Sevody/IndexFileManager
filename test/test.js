@@ -2,10 +2,12 @@ const { expect } = require('chai')
 const fs = require('fs-extra')
 const path = require('path')
 const _ = require('lodash')
+const ffmetadata = require('ffmetadata')
 const { travel, isEqualDir } = require('../src/lib/helper')
 const { rename, remeta, WinRAR } = require('../index')
 const TESTRAR = './test/testrar'
 const TESTRENAME = './test/testrename'
+const TESTREMETA = './test/testremeta'
 const SOURCE = './test/source'
 const TARGET = './test/target'
 
@@ -43,7 +45,23 @@ describe('rename', function() {
 })
 
 describe('remeta', function() {
-  
+  beforeEach(function() {
+    fs.removeSync(SOURCE)
+    fs.copySync(TESTREMETA, SOURCE)
+  })
+  describe('mp3 meta', function() {
+    it('should set meta info to mp3 file', async function() {
+      await remeta(path.join(SOURCE, 'mp3'), {
+        artist: 'Aimer',
+        album: '花の唄',
+        atmpath: path.join(SOURCE, 'COVER.jpg')
+      })
+      const file = path.resolve(path.join(SOURCE, 'mp3/花の唄.mp3'))
+      ffmetadata.read(file, function(err, data) {
+        expect(data.artist).to.equal("Aimer");
+      });
+    })
+  })
 })
 
 describe('winrar', function() {

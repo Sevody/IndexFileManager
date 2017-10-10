@@ -5,7 +5,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceRoot}/src/zip.js"
+      "program": "${workspaceRoot}/node_modules/mocha/bin/mocha"
     },
       {
         "type": "node",

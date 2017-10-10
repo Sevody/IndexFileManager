@@ -2,26 +2,40 @@ const fs = require('fs')
 const path = require('path')
 const ffmetadata = require('ffmetadata')
 
-let imagePath = './test.png'
-
-function remetadata(dir) {
-    fs.readdirSync(dir).map((filename) => {
-        const filepath = path.join(dir, filename)
-        let data = {
-            title: filename.split('.')[0],
-            artist: 'test',
-            album: 'test'
+function remetadata(dir, opts) {
+  return new Promise((resolve, reject) => {
+    const {
+      artist,
+      album,
+      atmpath
+    } = opts
+    const files = fs.readdirSync(dir)
+    function next(i) {
+      if(i >= files.length) {
+        return resolve()
+      }
+      const filename = files[i]
+      const filepath = path.resolve(path.join(dir, filename))
+      let data = {
+        title: filename.split('.')[0],
+        artist,
+        album
+      }
+      let op = {
+        "id3v2.3": true,
+        attachments: [path.resolve(atmpath)]
+      }
+      ffmetadata.write(filepath, data, op, (err) => {
+        if (err) {
+          reject(err)
         }
-        let atmpath = path.join(dir, imagePath)
-        let op = {
-            "id3v2.3": true,
-            attachments: [atmpath]
+        else {
+          next(++i)
         }
-        ffmetadata.write(filepath, data, op, (err) => {
-            if (err) throw err
-            else console.log('rewrite', op)
-        })
-    })
+      })
+    }
+    next(0)
+  })
 }
 
 module.exports = remetadata
