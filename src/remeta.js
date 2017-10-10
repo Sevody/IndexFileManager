@@ -24,4 +24,4 @@ function remetadata(dir) {
     })
 }
 
-remetadata(process.argv[2])
+module.exports = remetadata

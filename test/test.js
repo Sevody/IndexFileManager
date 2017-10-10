@@ -3,8 +3,9 @@ const fs = require('fs-extra')
 const path = require('path')
 const _ = require('lodash')
 const { travel, isEqualDir } = require('../src/lib/helper')
-const { WinRAR } = require('../index')
+const { rename, remeta, WinRAR } = require('../index')
 const TESTRAR = './test/testrar'
+const TESTRENAME = './test/testrename'
 const SOURCE = './test/source'
 const TARGET = './test/target'
 
@@ -23,6 +24,26 @@ describe('helper', function() {
       expect(isEqualDir(TESTRAR, TESTRAR)).to.be.true
     })
   })
+})
+
+describe('rename', function() {
+  beforeEach(function() {
+    fs.removeSync(SOURCE)
+    fs.copySync(TESTRENAME, SOURCE)
+  })
+  describe('order name', function() {
+    it('should set a sequence name for all files in directory', function() {
+      rename(SOURCE, {
+        prefix: 'T'
+      })
+      const distName = path.basename(fs.readdirSync(SOURCE)[0]).split('.')[0]
+      expect(distName).to.equal('T1')
+    })
+  })
+})
+
+describe('remeta', function() {
+  
 })
 
 describe('winrar', function() {
