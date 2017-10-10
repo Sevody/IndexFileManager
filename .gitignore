@@ -47,3 +47,5 @@ combo/
 reference/
 jscoverage_lib/
 temp/
+test/source/
+test/target/
